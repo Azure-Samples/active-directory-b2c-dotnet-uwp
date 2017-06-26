@@ -59,7 +59,16 @@ Our sample calls the Web API produced by the following sample [https://github.co
 1. Find the assignment for each of the policies `public static string PolicyX` and replace the names of the policies you created in Step 3.
 1. Find the assignment for the scopes `public static string[] Scopes` and replace the scopes with those you created in Step 4.
 
-### Step 4:  Run the sample
+### [OPTIONAL] Step 6:  Enable Windows Integrated Authentication when using a federated Azure AD tenant
+Out of the box, this sample is not configured to work with Windows Integrated Authentication (WIA) when used with a federated Azure Active Directory domain. To work with WIA the application manifest must enable additional capabilities. These are not configured by default for this sample because applications requesting the Enterprise Authentication or Shared User Certificates capabilities require a higher level of verification to be accepted into the Windows Store, and not all developers may wish to perform the higher level of verification.
+To enable Windows Integrated Authentication, in Package.appxmanifest, in the Capabilities tab, enable:
+1. Enterprise Authentication
+2. Private Networks (Client & Server)
+3. Shared User Certificates
+
+Also, in the constructor of the application in `App.xaml.cs`, add the following line of code: ```authContext.UseCorporateNetwork = true;```
+
+### Step 7:  Run the sample
 
 1. Clean the solution, rebuild the solution, and run it.
 1. Click the sign-in button at the top of the application screen. The sample works exactly in the same way regardless of the account type you choose, apart from some visual differences in the authentication and consent experience. Upon successful sign in, the application screen will list some basic profile info for the authenticated user and show buttons that allow you to edit your profile, call an API and sign out.
