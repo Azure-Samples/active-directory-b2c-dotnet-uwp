@@ -39,7 +39,7 @@ namespace active_directory_b2c_dotnet_uwp
             IEnumerable<IAccount> accounts = await App.PublicClientApp.GetAccountsAsync();
             try
             {
-                IAccount currentUserAccount = GetUserByPolicy(accounts, App.PolicySignUpSignIn);
+                IAccount currentUserAccount = GetAccountByPolicy(accounts, App.PolicySignUpSignIn);
                 authResult = await App.PublicClientApp.AcquireTokenSilentAsync(App.ApiScopes, currentUserAccount, App.Authority, false);
 
                 DisplayBasicTokenInfo(authResult);
@@ -47,7 +47,7 @@ namespace active_directory_b2c_dotnet_uwp
             }
             catch (MsalUiRequiredException ex)
             {
-                authResult = await App.PublicClientApp.AcquireTokenAsync(App.ApiScopes, GetUserByPolicy(accounts, App.PolicySignUpSignIn), UIBehavior.SelectAccount, string.Empty, null, App.Authority);
+                authResult = await App.PublicClientApp.AcquireTokenAsync(App.ApiScopes, GetAccountByPolicy(accounts, App.PolicySignUpSignIn), UIBehavior.SelectAccount, string.Empty, null, App.Authority);
                 DisplayBasicTokenInfo(authResult);
                 UpdateSignInState(true);
             }
@@ -58,14 +58,13 @@ namespace active_directory_b2c_dotnet_uwp
             }
         }
 
-
         private async void EditProfileButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 IEnumerable<IAccount> accounts = await App.PublicClientApp.GetAccountsAsync();
                 ResultText.Text = $"Calling API:{App.AuthorityEditProfile}";
-                AuthenticationResult authResult = await App.PublicClientApp.AcquireTokenAsync(App.ApiScopes, GetUserByPolicy(accounts, App.PolicyEditProfile), UIBehavior.SelectAccount, string.Empty, null, App.AuthorityEditProfile);
+                AuthenticationResult authResult = await App.PublicClientApp.AcquireTokenAsync(App.ApiScopes, GetAccountByPolicy(accounts, App.PolicyEditProfile), UIBehavior.SelectAccount, string.Empty, null, App.AuthorityEditProfile);
                 DisplayBasicTokenInfo(authResult);
             }
             catch (Exception ex)
@@ -81,7 +80,7 @@ namespace active_directory_b2c_dotnet_uwp
             try
             {
 
-                authResult = await App.PublicClientApp.AcquireTokenSilentAsync(App.ApiScopes, GetUserByPolicy(accounts, App.PolicySignUpSignIn), App.Authority, false);
+                authResult = await App.PublicClientApp.AcquireTokenSilentAsync(App.ApiScopes, GetAccountByPolicy(accounts, App.PolicySignUpSignIn), App.Authority, false);
             }
             catch (MsalUiRequiredException ex)
             {
@@ -90,7 +89,7 @@ namespace active_directory_b2c_dotnet_uwp
 
                 try
                 {
-                    authResult = await App.PublicClientApp.AcquireTokenAsync(App.ApiScopes, GetUserByPolicy(accounts, App.PolicySignUpSignIn));
+                    authResult = await App.PublicClientApp.AcquireTokenAsync(App.ApiScopes, GetAccountByPolicy(accounts, App.PolicySignUpSignIn));
                 }
                 catch (MsalException msalex)
                 {
@@ -198,7 +197,7 @@ namespace active_directory_b2c_dotnet_uwp
             {
                 IEnumerable<IAccount> accounts = await App.PublicClientApp.GetAccountsAsync();
 
-                AuthenticationResult authResult = await App.PublicClientApp.AcquireTokenSilentAsync(App.ApiScopes, GetUserByPolicy(accounts, App.PolicySignUpSignIn), App.Authority, true);
+                AuthenticationResult authResult = await App.PublicClientApp.AcquireTokenSilentAsync(App.ApiScopes, GetAccountByPolicy(accounts, App.PolicySignUpSignIn), App.Authority, true);
                 DisplayBasicTokenInfo(authResult);
                 UpdateSignInState(true);
             }
@@ -216,7 +215,7 @@ namespace active_directory_b2c_dotnet_uwp
             }
         }
 
-        private IAccount GetUserByPolicy(IEnumerable<IAccount> accounts, string policy)
+        private IAccount GetAccountByPolicy(IEnumerable<IAccount> accounts, string policy)
         {
             foreach (var account in accounts)
             {
