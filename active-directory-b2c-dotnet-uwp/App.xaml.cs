@@ -31,6 +31,11 @@ namespace active_directory_b2c_dotnet_uwp
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            PublicClientApp = PublicClientApplicationBuilder.Create(ClientId)
+                .WithB2CAuthority(Authority)
+                .Build();
+
         }
 
         /// <summary>
@@ -104,7 +109,7 @@ namespace active_directory_b2c_dotnet_uwp
         public static string PolicyEditProfile = "b2c_1_edit_profile";
         public static string PolicyResetPassword = "b2c_1_reset";
 
-        public static string[] ApiScopes = { "https://fabrikamb2c.onmicrosoft.com/helloapi/demo.read"};
+        public static string[] ApiScopes = { "https://fabrikamb2c.onmicrosoft.com/helloapi/demo.read" };
         public static string ApiEndpoint = "https://fabrikamb2chello.azurewebsites.net/hello";
 
         private static string BaseAuthority = "https://login.microsoftonline.com/tfp/{tenant}/{policy}/oauth2/v2.0/authorize";
@@ -112,6 +117,6 @@ namespace active_directory_b2c_dotnet_uwp
         public static string AuthorityEditProfile = BaseAuthority.Replace("{tenant}", Tenant).Replace("{policy}", PolicyEditProfile);
         public static string AuthorityResetPassword = BaseAuthority.Replace("{tenant}", Tenant).Replace("{policy}", PolicyResetPassword);
 
-        public static PublicClientApplication PublicClientApp { get; } = new PublicClientApplication(ClientId, Authority);
+        public static IPublicClientApplication PublicClientApp { get; private set; }
     }
 }
