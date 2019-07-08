@@ -32,7 +32,7 @@ You can run the sample as is with its current settings, or you can optionally re
 
 > *IMPORTANT*: if you choose to perform one of the optional steps, you have to perform ALL of them for the sample to work as expected.
 
-You can find detailed instructions on how to create a new mobile / native app on [this page](https://docs.microsoft.com/azure/active-directory-b2c/active-directory-b2c-app-registration#register-a-mobilenative-application) Make sure to:
+You can find detailed instructions on how to create a new mobile / native app on [this page](https://docs.microsoft.com/en-us/azure/active-directory-b2c/add-native-application) Make sure to:
 
 - Copy down the **Application Id** assigned to your app, you'll need it in the next optional steps.
 - Copy down the **Redirect URI** you configure for your app.
