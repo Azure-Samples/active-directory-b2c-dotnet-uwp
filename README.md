@@ -4,7 +4,7 @@ languages:
 - csharp
 products:
 - azure
-description: "This simple sample demonstrates how to use the Microsoft Authentication Library (MSAL) for .NET to get an access token and call an API secured by Azure AD B2C."
+description: "This simple sample demonstrates how to use the Microsoft Authentication Library (MSAL) for .NET to get an access token and call an API."
 urlFragment: active-directory-b2c-dotnet-uwp
 ---
 
