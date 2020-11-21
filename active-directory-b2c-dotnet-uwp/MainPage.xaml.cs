@@ -1,4 +1,7 @@
-﻿using Microsoft.Identity.Client;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -226,15 +229,6 @@ namespace active_directory_b2c_dotnet_uwp
             }
 
             return null;
-        }
-
-        private string Base64UrlDecode(string s)
-        {
-            s = s.Replace('-', '+').Replace('_', '/');
-            s = s.PadRight(s.Length + (4 - s.Length % 4) % 4, '=');
-            var byteArray = Convert.FromBase64String(s);
-            var decoded = Encoding.UTF8.GetString(byteArray, 0, byteArray.Count());
-            return decoded;
         }
     }
 }
