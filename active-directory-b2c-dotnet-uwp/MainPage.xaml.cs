@@ -1,5 +1,4 @@
-﻿using Microsoft.Identity.Client;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -7,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Identity.Client;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -37,16 +37,22 @@ namespace active_directory_b2c_dotnet_uwp
                 DisplayBasicTokenInfo(authResult);
                 UpdateSignInState(true);
             }
-            catch (MsalUiRequiredException ex)
+            catch (MsalUiRequiredException)
             {
-                authResult = await App.PublicClientApp.AcquireTokenInteractive(App.ApiScopes)
-                    .WithAccount(GetAccountByPolicy(accounts, App.PolicySignUpSignIn))
-                    .WithPrompt(Prompt.SelectAccount)
-                    .ExecuteAsync();
-                DisplayBasicTokenInfo(authResult);
-                UpdateSignInState(true);
+                try
+                {
+                    authResult = await App.PublicClientApp.AcquireTokenInteractive(App.ApiScopes)
+                        .WithAccount(GetAccountByPolicy(accounts, App.PolicySignUpSignIn))
+                        .WithPrompt(Prompt.SelectAccount)
+                        .ExecuteAsync();
+                    DisplayBasicTokenInfo(authResult);
+                    UpdateSignInState(true);
+                }
+                catch (Exception ex)
+                {
+                    ResultText.Text = $"Users:{string.Join(",", accounts.Select(u => u.Username))}{Environment.NewLine}Error Acquiring Token:{Environment.NewLine}{ex}";
+                }
             }
-
             catch (Exception ex)
             {
                 ResultText.Text = $"Users:{string.Join(",", accounts.Select(u => u.Username))}{Environment.NewLine}Error Acquiring Token:{Environment.NewLine}{ex}";
@@ -58,7 +64,7 @@ namespace active_directory_b2c_dotnet_uwp
             try
             {
                 IEnumerable<IAccount> accounts = await App.PublicClientApp.GetAccountsAsync();
-                ResultText.Text = $"Calling API:{App.AuthorityEditProfile}";
+                ResultText.Text = $"Calling API: {App.AuthorityEditProfile}";
                 AuthenticationResult authResult = await App.PublicClientApp.AcquireTokenInteractive(App.ApiScopes)
                     .WithAccount(GetAccountByPolicy(accounts, App.PolicyEditProfile))
                     .WithPrompt(Prompt.NoPrompt)
@@ -222,7 +228,8 @@ namespace active_directory_b2c_dotnet_uwp
             foreach (var account in accounts)
             {
                 string userIdentifier = account.HomeAccountId.ObjectId.Split('.')[0];
-                if (userIdentifier.EndsWith(policy.ToLower())) return account;
+                if (userIdentifier.EndsWith(policy.ToLower()))
+                    return account;
             }
 
             return null;
